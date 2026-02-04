@@ -1,4 +1,4 @@
-a = 1
-b = 2
-if a == b:
-    print("same")
+def divide(a, b):
+    return a / b
+
+divide(10, 0)
