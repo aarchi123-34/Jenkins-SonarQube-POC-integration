@@ -1,4 +1,2 @@
-def divide(a, b):
-    return a / b
+password = "admin123"
 
-divide(10, 0)
