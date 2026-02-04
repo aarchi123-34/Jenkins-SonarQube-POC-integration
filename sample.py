@@ -1,8 +1,4 @@
-def check():
-    a = 10
-    b = 20
-
-    if a = b:  
-        print("Equal")
-
-check()
+a = 1
+b = 2
+if a == b:
+    print("same")
