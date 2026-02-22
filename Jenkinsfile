@@ -1,12 +1,34 @@
 pipeline {
     agent any
 
-    stages {
+    tools {
+        sonarQubeScanner 'sonar-scanner'
+    }
 
-        stage('SonarQube Analysis') {
+    environment {
+        SONAR_AUTH_TOKEN = credentials('sonarcloud-token')
+    }
+
+    stages {
+        stage('Build') {
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh "${tool 'sonar-scanner'}/bin/sonar-scanner"
+                echo 'Building project...'
+                // For Python, optional: install dependencies
+                sh 'python3 -m pip install --user -r requirements.txt || true'
+            }
+        }
+
+        stage('SonarCloud Analysis') {
+            steps {
+                withSonarQubeEnv('sonarcloud') {
+                    sh '''
+                    sonar-scanner \
+                      -Dsonar.projectKey=aarchi123-34_Jenkins-SonarQube-POC-integration \
+                      -Dsonar.organization=aarchi123-34 \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=https://sonarcloud.io \
+                      -Dsonar.login=$SONAR_AUTH_TOKEN
+                    '''
                 }
             }
         }
@@ -16,6 +38,11 @@ pipeline {
                 waitForQualityGate abortPipeline: true
             }
         }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploy stage (optional)'
+            }
+        }
     }
 }
-
