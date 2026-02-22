@@ -1,19 +1,14 @@
 pipeline {
     agent any
 
-    tools {
-        sonarQubeScanner 'sonar-scanner'
-    }
-
     environment {
         SONAR_AUTH_TOKEN = credentials('sonarcloud-token')
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building project...'
-                sh 'python3 -m pip install --user -r requirements.txt || true'
+                echo 'Code checked out automatically by SCM'
             }
         }
 
@@ -35,12 +30,6 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 waitForQualityGate abortPipeline: true
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploy stage'
             }
         }
     }
