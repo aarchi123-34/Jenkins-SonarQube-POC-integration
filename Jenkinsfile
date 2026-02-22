@@ -13,7 +13,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building project...'
-                // For Python, optional: install dependencies
                 sh 'python3 -m pip install --user -r requirements.txt || true'
             }
         }
@@ -41,7 +40,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploy stage (optional)'
+                echo 'Deploy stage'
             }
         }
     }
